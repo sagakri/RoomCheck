@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Заявка на общежитие</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <img src="johnny-left.png" class="johnny johnny-left" alt="Johnny Cage">
+
+    <img src="johnny-right.png" class="johnny johnny-right" alt="Johnny Cage">
+
+
+</body>
+
+<body>
+
+    <div class="container">
+
+        <h1>Заявка на комнату</h1>
+
+        <p class="description">
+            Заполните данные для проверки возможности заселения в общежитие.
+        </p>
+
+        <form id="applicationForm">
+
+            <label for="studentId">ID студента</label>
+            <input
+                type="number"
+                id="studentId"
+                placeholder="Например: 1"
+                required
+            >
+
+            <label for="building">Номер корпуса</label>
+            <input
+                type="number"
+                id="building"
+                placeholder="Например: 1"
+                required
+            >
+
+            <label for="room">Номер комнаты</label>
+            <input
+                type="number"
+                id="room"
+                placeholder="Например: 101"
+                required
+            >
+
+            <button type="submit">
+                Проверить заявку
+            </button>
+
+        </form>
+
+        <div id="result"></div>
+
+        <div id="details"></div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
