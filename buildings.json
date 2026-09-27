@@ -1,0 +1,14 @@
+[
+    {
+        "number": 1,
+        "forStudents": true
+    },
+    {
+        "number": 2,
+        "forStudents": false
+    },
+    {
+        "number": 3,
+        "forStudents": true
+    }
+]

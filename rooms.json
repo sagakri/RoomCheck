@@ -1,0 +1,22 @@
+[
+    {
+        "building": 1,
+        "number": 101,
+        "free": true
+    },
+    {
+        "building": 1,
+        "number": 102,
+        "free": false
+    },
+    {
+        "building": 2,
+        "number": 201,
+        "free": true
+    },
+    {
+        "building": 3,
+        "number": 301,
+        "free": true
+    }
+]

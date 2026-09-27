@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "Иван",
+        "nonResident": true
+    },
+    {
+        "id": 2,
+        "name": "Алексей",
+        "nonResident": false
+    },
+    {
+        "id": 3,
+        "name": "Мария",
+        "nonResident": true
+    }
+]

@@ -3,20 +3,18 @@ const form = document.getElementById("applicationForm");
 const result = document.getElementById("result");
 const details = document.getElementById("details");
 
-
 form.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
-
     const studentId =
-        document.getElementById("studentId").value;
+        Number(document.getElementById("studentId").value);
 
-    const building =
-        document.getElementById("building").value;
+    const buildingNumber =
+        Number(document.getElementById("building").value);
 
-    const room =
-        document.getElementById("room").value;
+    const roomNumber =
+        Number(document.getElementById("room").value);
 
 
     result.className = "";
@@ -29,67 +27,126 @@ form.addEventListener("submit", async function (event) {
 
     try {
 
-        // GET №1
-        // Проверяем студента
+        // ==========================================
+        // GET №1 — получаем студентов
+        // ==========================================
 
-        const studentResponse =
-            await fetch(`/api/student/${studentId}`);
+        const studentsResponse =
+            await fetch("./students.json");
+
+        if (!studentsResponse.ok) {
+            throw new Error("Ошибка получения студентов");
+        }
+
+        const students =
+            await studentsResponse.json();
+
+
+        // ==========================================
+        // GET №2 — получаем корпуса
+        // ==========================================
+
+        const buildingsResponse =
+            await fetch("./buildings.json");
+
+        if (!buildingsResponse.ok) {
+            throw new Error("Ошибка получения корпусов");
+        }
+
+        const buildings =
+            await buildingsResponse.json();
+
+
+        // ==========================================
+        // GET №3 — получаем комнаты
+        // ==========================================
+
+        const roomsResponse =
+            await fetch("./rooms.json");
+
+        if (!roomsResponse.ok) {
+            throw new Error("Ошибка получения комнат");
+        }
+
+        const rooms =
+            await roomsResponse.json();
+
+
+
+        // ==========================================
+        // Ищем введённые данные
+        // ==========================================
 
         const student =
-            await studentResponse.json();
-
-
-        // GET №2
-        // Проверяем корпус
-
-        const buildingResponse =
-            await fetch(`/api/building/${building}`);
-
-        const buildingData =
-            await buildingResponse.json();
-
-
-        // GET №3
-        // Проверяем комнату
-
-        const roomResponse =
-            await fetch(
-                `/api/room/${building}/${room}`
+            students.find(
+                student => student.id === studentId
             );
 
-        const roomData =
-            await roomResponse.json();
+
+        const building =
+            buildings.find(
+                building =>
+                    building.number === buildingNumber
+            );
+
+
+        const room =
+            rooms.find(
+                room =>
+                    room.building === buildingNumber &&
+                    room.number === roomNumber
+            );
 
 
 
-        // Показываем результаты проверок
+        // ==========================================
+        // Проверка существования данных
+        // ==========================================
+
+        const studentIsNonResident =
+            student && student.nonResident;
+
+        const buildingForStudents =
+            building && building.forStudents;
+
+        const roomIsFree =
+            room && room.free;
+
+
+
+        // ==========================================
+        // Показываем 3 проверки
+        // ==========================================
 
         details.innerHTML = `
+
             <p>
-                ${student.nonResident ? "✅" : "❌"}
+                ${studentIsNonResident ? "✅" : "❌"}
                 Студент иногородний
             </p>
 
             <p>
-                ${buildingData.forStudents ? "✅" : "❌"}
+                ${buildingForStudents ? "✅" : "❌"}
                 Корпус предназначен для студентов
             </p>
 
             <p>
-                ${roomData.free ? "✅" : "❌"}
+                ${roomIsFree ? "✅" : "❌"}
                 Комната свободна
             </p>
+
         `;
 
 
 
-        // Главная валидация
-        // 
+        // ==========================================
+        // Финальная валидация
+        // ==========================================
 
         if (
-            student.nonResident &&
-            buildingData.forStudents &&
-            roomData.free
+            studentIsNonResident &&
+            buildingForStudents &&
+            roomIsFree
         ) {
 
             result.textContent =
@@ -97,23 +154,29 @@ form.addEventListener("submit", async function (event) {
 
             result.className = "success";
 
-        } else {
+        }
+
+        else {
 
             result.textContent =
                 "❌ Отказ в заселении.";
 
             result.className = "error";
+
         }
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(error);
 
         result.textContent =
-            "Ошибка при получении данных от сервера.";
+            "Ошибка при получении данных.";
 
         result.className = "error";
+
     }
 
 });
